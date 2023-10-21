@@ -11,7 +11,6 @@ app.use(cors());
 app.use(express.json());
 
 
-
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0jahed.ldqz6dp.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -26,7 +25,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
     const productCollection = client.db("productDB").collection("products");
     const userCollection = client.db("productDB").collection("users");
     const cartCollection = client.db("productDB").collection("cart");
@@ -57,20 +56,17 @@ async function run() {
 
     app.post("/products", async (req,res) =>{
         const newProduct = req.body;
-        console.log(newProduct);
         const result = await productCollection.insertOne(newProduct);
         res.send(result);
     })
     app.post("/addToCart", async (req,res) =>{
         const newCart = req.body;
-        console.log(newCart);
         const result = await cartCollection.insertOne(newCart);
         res.send(result);
     })
     app.post("/users", async (req,res) =>{
-        const newProduct = req.body;
-        console.log(newProduct);
-        const result = await userCollection.insertOne(newProduct);
+        const newUser = req.body;
+        const result = await userCollection.insertOne(newUser);
         res.send(result);
     })
 
@@ -103,7 +99,7 @@ async function run() {
       res.send(result);
     });
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
